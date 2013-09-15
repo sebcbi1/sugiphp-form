@@ -1,6 +1,7 @@
 {
     "name": "sugiphp/form",
     "type": "library",
+    "description": "Form generator",
     "authors": [
         {
             "name": "Sébastien LEBEAU",
