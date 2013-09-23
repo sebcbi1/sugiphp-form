@@ -14,7 +14,8 @@ class Input extends BaseControl
 	 */
 	protected function setValue($value)
 	{
-		return $this->setAttribute("value", $value);
+		parent::setValue($value);
+		return $this->setAttribute("value", $this->value);
 	}
 
 	/**

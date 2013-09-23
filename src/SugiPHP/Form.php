@@ -201,7 +201,7 @@ class Form
 	{
 		if ($n = $this->getName()) return $n;
 		$str = "";
-		foreach ($this->controls as $name => $c) {
+		foreach ($this->controls as $name => $control) {
 			$str .= $name;
 		}
 		return "form_" . abs(crc32($str));
@@ -246,7 +246,7 @@ class Form
 	 * @return boolean
 	 */
 	public function valid()
-	{
+	{		
 		if (!$this->submitted()) return false;
 		return count($this->errors()) === 0;
 	}
@@ -258,11 +258,23 @@ class Form
 	 */
 	public function errors()
 	{
+
 		if (!is_null($this->errors)) return $this->errors;
 		$this->errors = array();
 		foreach ($this->controls as $name => $control) {
-			if ($e = $control->error()) {
-				$this->errors[$name] = $e;
+
+			if (is_array($control)) {
+				$err = array();
+				foreach ($control as $ctrl) {
+					if ($e = $ctrl->error()) {
+						$err[] = $e;
+					}
+				}
+				if (count($err) > 0) $this->errors[$name] = implode(', ', $err);
+			} else {
+				if ($e = $control->error()) {
+					$this->errors[$name] = $e;
+				}
 			}
 		}
 		return $this->errors;
@@ -279,8 +291,17 @@ class Form
 		if ($this->submitted()) {
 			$arr = (strcasecmp($this->method(), "post") == 0) ? $_POST : $_GET;
 			foreach ($this->controls as $name => $control) {
-				if ($control->attribute('type') != 'submit' || isset($arr[$name])) {
-					$values[$name] = $control->value();
+				if (is_array($control)) {
+					foreach ($control as $ctrl) {
+						if ($ctrl->attribute('type') != 'submit' && isset($arr[$name])) {
+							$values[$name] = $ctrl->value();
+						}
+					}
+					$values[$name] = $arr[$name];
+				} else {
+					if ($control->attribute('type') != 'submit' && isset($arr[$name])) {
+						$values[$name] = $control->value();
+					}
 				}
 			}
 		}
@@ -290,14 +311,27 @@ class Form
 	protected function readHttpData($data)
 	{
 		foreach ($this->controls as $control) {
-			$control->readHttpData($data);
+			if (is_array($control)) {
+				foreach ($control as $ctrl) {
+					$ctrl->readHttpData($data);
+				}
+			} else {
+				$control->readHttpData($data);
+			}
 		}
 	}
 
 	public function setValues($values)
 	{
 		foreach ($this->controls as $name => $control) {
-			if (isset($values[$name])) $control->setValue($values[$name]);
+			if (is_array($control)) {
+				foreach ($control as $i => $ctrl) {
+					if (isset($values[$name]) && isset($values[$name][$i])) $ctrl->value($values[$name][$i]);
+				}
+			} else {
+				if (isset($values[$name])) $control->value($values[$name]);
+			}
+			
 		}
 	}
 
@@ -313,7 +347,21 @@ class Form
 
 	public function addControl(Form\Icontrol $control)
 	{
-		$this->controls[$control->getName()] = $control;
+		$name = $control->getName();
+		$arrName = $name . '[]';
+		if (isset($this->controls[$name])) {
+
+			$oldControl = $this->getControl($name);
+			if (!is_array($oldControl)) {
+				$oldControl->attribute('name', $arrName);
+				$oldControl = array($oldControl); 
+			}	
+			$control->attribute('name', $arrName);
+			$this->controls[$name] = array_merge($oldControl,array($control));
+
+		} else {
+			$this->controls[$name] = $control;
+		}
 		return $control;
 	}
 
@@ -384,9 +432,15 @@ class Form
 	 */
 	public function __toString()
 	{
+
 		$form = $this->header();
 		foreach ($this->controls as $control)	{
-			$form .= $control;
+			if (is_array($control))
+				foreach ($control as $ctrl) {
+					$form .= $ctrl;
+				}
+			else
+				$form .= $control;
 		}
 		$form .= $this->footer();
 
@@ -411,6 +465,9 @@ class Form
 
 
 	private function header() {
+		
+		$this->valid();
+
 		$form = "<form";
 		foreach ($this->attributes as $attr => $value) {
 			$form .= " {$attr}=\"{$value}\"";

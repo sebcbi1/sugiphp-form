@@ -14,6 +14,7 @@ class BaseControl
 	protected $required;
 	protected $error = false;
 	protected $rules =array();
+	protected $filters =array();
 
 	/**
 	 * Can't instantiate BaseControl
@@ -112,6 +113,10 @@ class BaseControl
 	 */
 	protected function setValue($value)
 	{
+
+		foreach ($this->filters as $filter) {
+			$value = call_user_func($filter,$value);
+		}
 		$this->value = $value;
 	}
 
@@ -159,6 +164,12 @@ class BaseControl
 
 		return false;
 	}
+
+	public function filter($callback) {
+		$this->filters[] = $callback;
+		return $this;
+	}
+
 
 	public function rule($type, $error = null) {
 
