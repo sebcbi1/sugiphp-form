@@ -24,11 +24,6 @@ class Radio extends BaseControl implements IControl
 		$this->values = $values;
 
 	}
-	
-	public function readHttpData($data)
-	{
-		$this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
-	}
 
 	public function __toString()
 	{

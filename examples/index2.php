@@ -42,7 +42,7 @@ echo $form;
 echo "<hr/>";
 echo htmlspecialchars($form);
 echo "<hr/>";
-// var_dump($form->data());
+var_dump($form->data());
 
 
 

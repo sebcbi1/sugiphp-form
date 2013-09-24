@@ -28,9 +28,4 @@ class Input extends BaseControl
 		return $this->getAttribute("value");
 	}
 
-	public function readHttpData($data)
-	{
-		$this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
-	}
-
 }

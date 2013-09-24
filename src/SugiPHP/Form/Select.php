@@ -31,12 +31,6 @@ class Select extends BaseControl implements IControl
 		return $this->values->getOption($value);
 	}
 
-
-	public function readHttpData($data)
-	{
-		$this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
-	}
-
 	public function __toString()
 	{
 		$label = $this->getLabel();

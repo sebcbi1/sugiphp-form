@@ -20,11 +20,6 @@ class Textarea extends BaseControl implements IControl
 		$this->label = $label;
 	}
 
-	public function readHttpData($data)
-	{
-		$this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
-	}
-
 	public function __toString()
 	{
 		$label = $this->getLabel();

@@ -290,6 +290,7 @@ class Form
 		$values = array();
 		if ($this->submitted()) {
 			$arr = (strcasecmp($this->method(), "post") == 0) ? $_POST : $_GET;
+			$arr = array_merge($arr, $_FILES);
 			foreach ($this->controls as $name => $control) {
 				if (is_array($control)) {
 					foreach ($control as $ctrl) {
@@ -312,8 +313,8 @@ class Form
 	{
 		foreach ($this->controls as $control) {
 			if (is_array($control)) {
-				foreach ($control as $ctrl) {
-					$ctrl->readHttpData($data);
+				foreach ($control as $key => $ctrl) {
+					$ctrl->readHttpData($data , $key);
 				}
 			} else {
 				$control->readHttpData($data);

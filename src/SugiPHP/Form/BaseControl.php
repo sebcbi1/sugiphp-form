@@ -105,6 +105,15 @@ class BaseControl
 			$this->form->controlTemplate());
 	} 
 
+	public function readHttpData($data, $key = null)
+	{
+		if (is_null($key))
+			return $this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
+		else {
+			return $this->setValue(\SugiPHP\Form::filterKey($key, $data[str_replace('[]', '', $this->getName())]));
+		}
+	}
+
 
 	/**
 	 * Sets control value
