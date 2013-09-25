@@ -15,6 +15,7 @@ class BaseControl
 	protected $error = false;
 	protected $rules =array();
 	protected $filters =array();
+	protected $controlTemplate = null;
 
 	/**
 	 * Can't instantiate BaseControl
@@ -102,8 +103,21 @@ class BaseControl
 		}
 		return preg_replace_callback('/\{(\w+)\}/',
 			function ($m) use ($params) {return $params[$m[1]];}, 
-			$this->form->controlTemplate());
-	} 
+			$this->controlTemplate());
+	}
+
+	protected function controlTemplate()
+	{
+		if( !empty($this->controlTemplate)){
+			return $this->controlTemplate;
+		}
+		return $this->form->controlTemplate();
+	}
+
+	public function setControlTemplate($tmpl = null)
+	{
+		$this->controlTemplate = $tmpl;
+	}
 
 	public function readHttpData($data, $key = null)
 	{
