@@ -38,14 +38,13 @@ class Checkbox extends Text
 		return ($this->getAttribute("checked") == 'checked') ? $this->val : null;
 	}
 
-	public function readHttpData($data)
+	public function readHttpData($data , $key = null)
 	{
-		$data = \SugiPHP\Form::filterKey($this->getName(), $data);
-		if (!is_null($data)) {
+		$data = parent::readHttpData($data , $key);
+		if (!empty($data)) {
 			$this->setAttribute('checked','checked');
 		}
 	}
-
 
 	public function __toString()
 	{

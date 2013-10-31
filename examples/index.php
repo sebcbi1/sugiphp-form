@@ -99,7 +99,6 @@ $form->addUpload("file", "test")->rule("required"	);
 $form->addSubmit("submit", "Send");
 $form->addSubmit("submit2", "Send2");
 
-var_dump($form->data());
 
 if ($form->submitted()) {
 	$data = $form->data();
@@ -116,4 +115,5 @@ echo $form;
 echo "<hr/>";
 echo htmlspecialchars($form);
 
+var_dump($form->data());
 ?>

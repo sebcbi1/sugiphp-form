@@ -31,11 +31,6 @@ class MultipleSelect extends BaseControl implements IControl
 		return is_null($this->value) ? array() : $this->value;
 	}
 
-	public function readHttpData($data)
-	{
-		$this->setValue(\SugiPHP\Form::filterKey($this->getName(), $data));
-	}
-
 	public function __toString()
 	{
 		$label = $this->getLabel();
