@@ -6,20 +6,13 @@
 
 use SugiPHP\Form\SelectOptions;
 
-/**
- * \SugiPHP\Form\Select
- */
+
 class Select extends BaseControl implements IControl
 { 
 
 	protected $values = array();
 	protected $value = null;
 
-	/**
-	 * Can't instantiate BaseControl
-	 * 
-	 * @param string
-	 */
 	public function __construct($name, $label, $values = array())
 	{
 		$this->attributes['name'] = $name;

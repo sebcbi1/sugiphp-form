@@ -36,8 +36,11 @@ class Text extends Input implements IControl
 		$control .= " />";
 
 		$error = $this->error ? $this->error : "";
-		
-		return $this->renderControl(compact('label','control','error'));
+
+		if ($this->attribute('type') == 'hidden')
+			return $control;
+		else
+			return $this->renderControl(compact('label','control','error'));
 	}
 
 

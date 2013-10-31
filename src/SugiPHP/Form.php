@@ -280,6 +280,25 @@ class Form
 		return $this->errors;
 	}
 
+	public function htmlErrors() {
+		$ret = [];
+		if ($this->submitted() && !empty($this->errors())) {
+				foreach ($this->errors() as $k => $error) {
+					if ($error) {
+						$params['error'] = $error;
+						$params['error_class'] = $this->errorClass();
+						$ret[$k] = preg_replace_callback(
+							'/\{(error|error_class)\}/',
+							function ($m) use ($params) {return $params[$m[1]];}, 
+							$this->formErrorTemplate()
+						);
+					} 		
+				}
+		}
+		return $ret;
+	}
+
+
 	/**
 	 * Returns form data
 	 * 
@@ -455,10 +474,10 @@ class Form
 	 */
 	public function toArray()
 	{
-
 		return array(
 			'header'  => $this->header(),
 			'control' => $this->controls,
+			'error'   => $this->htmlErrors(),
 			'footer'  => $this->footer()
 		);
 	}
