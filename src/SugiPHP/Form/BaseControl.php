@@ -50,6 +50,14 @@ class BaseControl
 		return $this;
 	}
 
+	
+	protected function removeAttribute($name)
+	{
+		unset($this->attributes[$name]);
+		return $this;
+	}
+
+
 	/**
 	 * Returns control attribute
 	 * 
