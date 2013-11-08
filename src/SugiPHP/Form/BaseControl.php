@@ -51,7 +51,7 @@ class BaseControl
 	}
 
 	
-	protected function removeAttribute($name)
+	public function removeAttribute($name)
 	{
 		unset($this->attributes[$name]);
 		return $this;
