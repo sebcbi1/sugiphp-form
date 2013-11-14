@@ -280,10 +280,12 @@ class Form
 		return $this->errors;
 	}
 
+
 	public function htmlErrors() {
 		$ret = [];
-		if ($this->submitted() && !empty($this->errors())) {
-				foreach ($this->errors() as $k => $error) {
+		$errors = $this->errors();
+		if ($this->submitted() && !empty($errors)) {
+				foreach ($errors as $k => $error) {
 					if ($error) {
 						$params['error'] = $error;
 						$params['error_class'] = $this->errorClass();
@@ -297,7 +299,6 @@ class Form
 		}
 		return $ret;
 	}
-
 
 	/**
 	 * Returns form data
