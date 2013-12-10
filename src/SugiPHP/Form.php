@@ -283,8 +283,9 @@ class Form
 
 	public function htmlErrors() {
 		$ret = [];
-		$errors = $this->errors();
-		if ($this->submitted() && !empty($errors)) {
+		if ($this->submitted()) {
+			$errors = $this->errors();
+			if (!empty($errors)) {
 				foreach ($errors as $k => $error) {
 					if ($error) {
 						$params['error'] = $error;
@@ -296,6 +297,7 @@ class Form
 						);
 					} 		
 				}
+			}
 		}
 		return $ret;
 	}
