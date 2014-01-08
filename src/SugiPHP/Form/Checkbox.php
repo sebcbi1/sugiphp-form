@@ -6,6 +6,8 @@
  * @extends SugiPHP\Form\Text
  */
 
+use SugiPHP\Form;
+
 class Checkbox extends Text
 {
 
@@ -40,7 +42,7 @@ class Checkbox extends Text
 
 	public function readHttpData($data , $key = null)
 	{
-		$data = parent::readHttpData($data , $key);
+		$data = Form::filterKey($this->getName(), $data);
 		if (!empty($data)) {
 			$this->setAttribute('checked','checked');
 		}
