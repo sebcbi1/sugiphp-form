@@ -65,6 +65,7 @@ class SelectOptionGroup {
 
 	public function __construct($label = "", $optArray = array()) {
 		$this->label = $label;
+		$this->options = array();
 		foreach($optArray as $key => $opt) {
 			$this->options[] = new SelectOption($key,$opt);	
 		}
