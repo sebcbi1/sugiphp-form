@@ -18,7 +18,7 @@ interface IControl
 	 *
 	 * @param array $data - GET or POST data
 	 */
-	public function readHttpData($data);
+	public function readHttpData($data, $key = null);
 
 	/**
 	 * Return first error corresponding to the control

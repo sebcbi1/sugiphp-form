@@ -20,7 +20,7 @@ class Upload extends Text
 	// 	return $this
 	// }
 
-	public function readHttpData($data)
+	public function readHttpData($data, $key = null)
 	{
 		if (!isset($_FILES[$this->getName()])) {
 			$this->error = $this->required;
