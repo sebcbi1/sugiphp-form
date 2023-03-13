@@ -28,7 +28,7 @@ class Text extends Input implements IControl
 				$value .= " ".$this->form->errorClass();
 				$classAdded = true;
 			}
-			$control .= " {$attr}=\"".htmlspecialchars($value)."\"";
+			$control .= " {$attr}=\"".htmlspecialchars($value ?? '')."\"";
 		}
 		if ($this->error and !$classAdded) {
 			$control .= " class=\"{$this->form->errorClass()}\"";
